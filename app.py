@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request , render_template , redirect, session 
 from flask_restful import Resource, Api
 from flask_bcrypt import Bcrypt
 from flask_mysqldb import MySQL
+from datetime import datetime , timedelta
 
 app = Flask(__name__)
 app.secret_key = 'z8za7m(621a)nnehl-$-+u8dpjb*b_667)i^kj@ght=&6-5#' 
@@ -81,23 +82,18 @@ def signup():
 def reset():
     return render_template("reset.html")
 
-@app.route("/admin_dashboard")
-def admin_dashboard():
-            # Check if the logged-in user is an admin
-        user_id = session['user_id']
-        cur = mysql.connection.cursor()
-        cur.execute("SELECT is_admin FROM users WHERE id = %s", (user_id,))
-        is_admin = cur.fetchone()[0]
-        if is_admin:
-    # Admin user
-    # Query active users and their bookings, and pass the data to the template
-    # Modify the query according to your database structure
-            cur.execute("SELECT name,mobile_number FROM users ")
-            active_users = cur.fetchall()
-            print(active_users)
-            return render_template("admin_dashboard.html",users=active_users)
+@app.route("/bookings")
 
+def bookings():
+    user_id = request.args.get('user_id')
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM users WHERE id = %s", (user_id,))
+    user_data = cur.fetchone()
+    
+    cur.execute("SELECT * FROM bookings WHERE user_id = %s", (user_id,))
+    bookings_data = cur.fetchall()
 
+    return render_template("bookings.html", user_data=user_data, bookings_data=bookings_data)
 
 @app.route("/dashboard")
 def dashboard():
@@ -117,6 +113,69 @@ def dashboard():
     else:
         # User is not authenticated, redirect to login page
         return redirect(url_for('login'))
+    
+
+@app.route("/admin_dashboard")
+def admin_dashboard():
+            # Check if the logged-in user is an admin
+        user_id = session['user_id']
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT is_admin FROM users WHERE id = %s", (user_id,))
+        is_admin = cur.fetchone()[0]
+        if is_admin:
+    # Admin user
+    # Query active users and their bookings, and pass the data to the template
+    # Modify the query according to your database structure
+            cur.execute("SELECT name,mobile_number FROM users ")
+            active_users = cur.fetchall()
+            print(active_users)
+            return render_template("admin_dashboard.html",users=active_users)
+
+@app.route("/clients")
+def clients():
+    
+    # Check if the logged-in user is an admin
+    user_id = session.get('user_id')
+    if user_id is None:
+        # Redirect to login if not logged in
+        return redirect(url_for('login'))
+
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT is_admin FROM users WHERE id = %s", (user_id,))
+    is_admin = cur.fetchone()[0]
+
+    if is_admin:
+        # Admin user
+        # Calculate the date 3 months ago
+        three_months_ago = datetime.now() - timedelta(days=90)
+
+        # Query active clients (booked a service in the last 3 months)
+        cur.execute("SELECT users.name, users.mobile_number,bookings.booking_date,bookings.service_name FROM users JOIN bookings ON users.id = bookings.user_id WHERE bookings.booking_date >= %s", (three_months_ago,))
+        active_clients = cur.fetchall()
+        print("active",active_clients)
+
+        # Query inactive clients (not booked a service in the last 3 months)
+        cur.execute("SELECT users.name, users.mobile_number,bookings.booking_date,bookings.service_name FROM users JOIN bookings ON users.id = bookings.user_id WHERE bookings.booking_date <= %s", (three_months_ago,))
+        inactive_clients = cur.fetchall()
+        print(inactive_clients)
+
+        return render_template("clients.html", active_clients=active_clients, inactive_clients=inactive_clients)
+    else:
+        # Redirect to login if not admin
+        return redirect(url_for('login'))
+
+
+
+
+    
+@app.route("/signout")
+
+def signout():
+    
+    session.clear()
+
+    return redirect(url_for('login'))
+
 
 if __name__ == '__main__':
     app.run(debug=True)

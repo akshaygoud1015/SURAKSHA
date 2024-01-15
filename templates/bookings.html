@@ -6,36 +6,27 @@
     <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="pragma" content="no-cache">
     <meta http-equiv="expires" content="0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin_dashboard.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kalnia:wght@600&family=Playfair+Display:ital,wght@1,500&family=Zilla+Slab:ital@1&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-    <title>Document</title>
+    <title>Dashboard</title>
 </head>
 <body>
-    <h1 class="title">hello admin</h1>
+    <h1 class="heading"> welcome  {{ user_data[1] }}</h1>
     <nav class="navbar navbar-expand-lg justify-content-center navbar-dark bg-dark">
         <div class="container-fluid">
-          <a class="navbar-brand" href="{{ url_for('admin_dashboard')}}">Home</a>
+          <a class="navbar-brand" href="{{ url_for('dashboard')}}">Home</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{{ url_for('clients')}}">Clients</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Bookings</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Services</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Employees</a>
+                <a class="nav-link active" aria-current="page" href="{{ url_for('bookings', user_id=user_data[0])  }}">My Bookings</a>
               </li>
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -50,7 +41,26 @@
         </div>
       </nav>
 
-      <h1 class="heading">Latest Updates</h1>
+      <h1 class="title ">Your Bookings</h1>
+      <div class="container services">
+        <div class="row">
+            {% if bookings_data %}
+            {% for booking in bookings_data %}
+                <div class="col-md-4 mb-4">
+                    <div class="card shadow-lg p-3 mb-5 bg-body rounded">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ booking[2] }}</h5>
+                            <p class="card-text">{{ booking[3] }}</p>
+                            <a href="#" class="btn btn-primary">Book again</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            {% else %}
+            <h2>No Previous Bookings Found!!</h2>
+            {% endif %}
+        </div>
+        </div>
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>

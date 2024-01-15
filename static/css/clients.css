@@ -1,0 +1,17 @@
+.heading{
+    margin: 20px 0 10px 5px;
+    font-family: 'Kalnia', serif;
+}
+
+.title{
+    text-align: center;
+    font-family: 'Kalnia', serif;
+}
+.card{
+    margin-top: 10px;
+    text-align: center;
+}
+.card-body{
+    background-color: rgb(46, 45, 45);
+    color: white;
+}
