@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kalnia:wght@600&family=Playfair+Display:ital,wght@1,500&family=Zilla+Slab:ital@1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+
+    <title>Document</title>
+</head>
+<body>
+    <div class="first" >
+        <h1 class="title text-center"> The Suraksha</h1>
+        <h2 class="title text-center">child care and development center</h2> 
+        <div class="sub-title">
+            <h1 class="sub"> Securing a <br> safe future for <br> our children</h1>
+        </div>
+        <a href="{{ url_for('login') }}" class="btn btn-secondary btn-lg login" role="button">Login</a>
+        <a href="{{ url_for('signup') }}" class="btn btn-secondary btn-lg signup" role="button">Signup</a>
+        
+        
+
+    
+    </div>
+    <div class="second">
+        <h1 class="title ">our services</h1>
+        <div class="container services">
+            <div class="row">
+                <div class="col-sm-6 col-md-4  ">
+                    <div class="card mb-3 text-dark bg-light shadow-lg p-3 mb-5 bg-body rounded">
+                        <div class="card-body">
+                            <h5 class="card-title">Special Education</h5>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            <a href="#" class="card-link">Card link</a>
+
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="col-sm-6 col-md-4">
+                    <div class="card mb-3 text-dark bg-light shadow-lg p-3 mb-4 bg-body rounded">
+                        <div class="card-body">
+                            <h5 class="card-title">School Readiness</h5>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            <a href="#" class="card-link">Card link</a>
+                            <a href="#" class="card-link">Another link</a>
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="col-sm-6 col-md-4">
+                    <div class="card mb-3 text-dark bg-light shadow-lg p-3 mb-5 bg-body rounded">
+                        <div class="card-body">
+                            <h5 class="card-title">Behaviour Modification</h5>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            <a href="#" class="card-link">Card link</a>
+                            <a href="#" class="card-link">Another link</a>
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="col-sm-6 col-md-4 ">
+                    <div class="card mb-3 text-dark bg-light shadow-lg p-3 mb-5 bg-body rounded">
+                        <div class="card-body">
+                            <h5 class="card-title">Speech Therapy</h5>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            <a href="#" class="card-link">Card link</a>
+                            <a href="#" class="card-link">Another link</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-4">
+                    <div class="card mb-3 text-dark bg-light shadow-lg p-3 mb-5 bg-body rounded">
+                        <div class="card-body">
+                            <h5 class="card-title">Group Therapy</h5>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            <a href="#" class="card-link">Card link</a>
+                            <a href="#" class="card-link">Another link</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-4">
+                    <div class="card mb-3 text-dark bg-light shadow-lg p-3 mb-5 bg-body rounded">
+                        <div class="card-body">
+                            <h5 class="card-title">Parental Counseling </h5>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            <a href="#" class="card-link">Card link</a>
+                            <a href="#" class="card-link">Another link</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-4">
+                    <div class="card mb-3 text-dark bg-light shadow-lg p-3 mb-5 bg-body rounded">
+                        <div class="card-body">
+                            <h5 class="card-title">Occupational Therapy </h5>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            <a href="#" class="card-link">Card link</a>
+                            <a href="#" class="card-link">Another link</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-4">
+                    <div class="card mb-3 text-dark bg-light shadow-lg p-3 mb-5 bg-body rounded">
+                        <div class="card-body">
+                            <h5 class="card-title">General Guidance </h5>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            <a href="#" class="card-link">Card link</a>
+                            <a href="#" class="card-link">Another link</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-4">
+                    <div class="card mb-3 text-dark bg-light shadow-lg p-3 mb-5 bg-body rounded">
+                        <div class="card-body">
+                            <h5 class="card-title">Psychology Counseling </h5>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            <a href="#" class="card-link">Card link</a>
+                            <a href="#" class="card-link">Another link</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div >
+    <div class="third">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm location">
+                    <h1 class="last-title">Visit us </h1>
+                    <div class="card" style="width: 18rem;">
+                        <img src="{{url_for('static', filename='images/image2.png')}}" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">Location</h5>
+                            <p class="card-text">Feel free to visit us anytime during business hours.</p>
+                            <a href="https://www.google.com/maps/place/THE+SURAKSHA+CHILD+CARE+AND+DEVELOPMENT+CENTER/@17.4432152,78.4487144,3a,75y/data=!3m8!1e2!3m6!1sAF1QipPzlLpUalQP61lAu_fWXcKuxuIpj69n9kFvIOd_!2e10!3e12!6shttps:%2F%2Flh5.googleusercontent.com%2Fp%2FAF1QipPzlLpUalQP61lAu_fWXcKuxuIpj69n9kFvIOd_%3Dw109-h86-k-no!7i1024!8i803!4m11!1m2!2m1!1ssuraksha+child+development!3m7!1s0x3bcb91270082137d:0xfab86f1a0cfbbf9d!8m2!3d17.4431911!4d78.4488355!10e5!15sChpzdXJha3NoYSBjaGlsZCBkZXZlbG9wbWVudFocIhpzdXJha3NoYSBjaGlsZCBkZXZlbG9wbWVudJIBGHNwZWNpYWxfZWR1Y2F0aW9uX3NjaG9vbJoBJENoZERTVWhOTUc5blMwVkpRMEZuU1VSR01tWnVWMTlSUlJBQuABAA!16s%2Fg%2F11l6gyzz2c?entry=ttu" target="_blank" class="btn btn-primary">Google-maps</a>
+                        </div>
+                    </div>
+                </div>
+    
+                <!-- Our Doctors Carousel Section -->
+                <div class="col-sm-8">
+                    <h1 class="last-title">Our Doctors</h1>
+                    <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel">
+                        <div class="carousel-indicators">
+                            <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                            <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                        </div>
+                        <div class="carousel-inner">
+                            <div class="carousel-item active" data-bs-interval="10000">
+                                <img src="{{url_for('static', filename='images/image3.jpeg')}}" class="d-block w-100 doctors" alt="...">
+                                <div class="carousel-caption d-none d-md-block">
+                                    <h5>R.James Abhilash</h5>
+                                    <p>B.ED. SPECIAL EDUCATION (MENTAL RETARDATION)</p>
+                                </div>
+                            </div>
+                            <div class="carousel-item" data-bs-interval="2000">
+                                <img src="{{url_for('static', filename='images/image4.jpeg')}}" class="d-block w-100 doctors" alt="...">
+                                <div class="carousel-caption d-none d-md-block">
+                                    <h5>Sappi Mounika</h5>
+                                    <p>Msc in Psychology</p>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion accordion-flush" id="accordionFlushExample">
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="flush-headingOne">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne" style="text-align: center;">
+                      Call us
+                    </button>
+                  </h2>
+                  <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body">9948282935 , 913314747</div>
+                  </div>
+                </div>
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="flush-headingTwo">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                      Mail us
+                    </button>
+                  </h2>
+                  <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body">thesurakshaaccdc@gmail.com</div>
+                  </div>
+                </div>
+              </div>
+            
+        <p class="cp-text">
+            © Copyright 2023 The Suraksha child care and development center. All rights reserved.
+        </p>
+        </div>
+    </div>
+
+    
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+</body>
+</html>

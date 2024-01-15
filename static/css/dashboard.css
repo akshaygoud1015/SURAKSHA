@@ -1,0 +1,27 @@
+.heading{
+    text-align: center;
+    font-family: 'Kalnia', serif;
+}
+.nav-item{
+    margin-left: 10px;
+}
+.title{
+    margin: 10px 0px 20px 0px;
+
+    font-family: 'Kalnia', serif;
+}
+.services{
+    text-align: center;
+  
+    
+}
+.card{
+    margin-top: 10px;
+}
+.card-body{
+    background-color: rgb(46, 45, 45);
+    color: white;
+}
+.cp-text{
+    text-align: center;
+}
