@@ -80,10 +80,34 @@ Now add few bookings into the table for testings using these commands:
     (3, 'general guidance', '2023-12-12'),
     (4, 'School Reading', '2023-11-16');
 
-    
+4. "employees" table:
+    create a employees table using the command:
 
+   CREATE TABLE employees (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    employee_name VARCHAR(255) NOT NULL,
+    employee_mobile_number VARCHAR(15) NOT NULL,
+    employee_password VARCHAR(255) NOT NULL,
+    is_attender BOOLEAN NOT NULL
+);
 
+   initially add two employees for testing using this command:
 
+  INSERT INTO employees(employee_name,employee_mobile_number,employee_password,is_attender) VALUES("employee1","1","1",true);
+  INSERT INTO employees(employee_name,employee_mobile_number,employee_password,is_attender) VALUES("employee2","2","2",false);
 
+5. "attendance" table:
+    create attendance table using the command:
+
+   CREATE TABLE attendance (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        employee_id INT,
+        attender_id INT,
+        attendance_date DATE,
+        status ENUM('present', 'absent') DEFAULT 'absent',
+        FOREIGN KEY (employee_id) REFERENCES employees(id),
+        FOREIGN KEY (attender_id) REFERENCES employees(id)
+       );
+     
 
 #keep updating this file with latest updates.
