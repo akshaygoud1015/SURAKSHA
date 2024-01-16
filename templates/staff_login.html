@@ -15,7 +15,7 @@
 <body>
   <div id="bg"></div>
   
-  <form method="post" action="{{ url_for('login') }}">
+  <form method="post" action="{{ url_for('staff') }}">
     <div class="form-field">
       <input type="number" name="mobile_number" placeholder="Mobile number" required/>
     </div>
@@ -30,7 +30,7 @@
     
 
     <a href="{{ url_for('reset') }}"> <h6 style="text-align: center;">forgot password..?</h6> </a>
-    <a href="{{ url_for('staff') }}"> <h6 style="text-align: center;">Employee</h6> </a>
+
 
     {% if message %}
     <div class="alert alert-danger">{{ message }}</div>

@@ -2,7 +2,7 @@ from flask import Flask, jsonify, request , render_template , redirect, session 
 from flask_restful import Resource, Api
 from flask_bcrypt import Bcrypt
 from flask_mysqldb import MySQL
-from datetime import datetime , timedelta
+from datetime import date, datetime , timedelta
 
 app = Flask(__name__)
 app.secret_key = 'z8za7m(621a)nnehl-$-+u8dpjb*b_667)i^kj@ght=&6-5#' 
@@ -164,10 +164,194 @@ def clients():
         # Redirect to login if not admin
         return redirect(url_for('login'))
 
+@app.route("/all_bookings")
+def all_bookings():
+    current_date = datetime.now().strftime('%Y-%m-%d')
+    cur = mysql.connection.cursor()
+
+# Fetch upcoming bookings
+    cur.execute("SELECT * FROM bookings WHERE booking_date >= %s", (current_date,))
+    upcoming_bookings = cur.fetchall()
+    cur.execute("SELECT * FROM bookings WHERE booking_date <= %s", (current_date,))
+    previous_bookings = cur.fetchall()
+
+    print(upcoming_bookings,previous_bookings)
+
+
+    return render_template("all_bookings.html",upcoming_bookings=upcoming_bookings,previous_bookings=previous_bookings)
+
+
+@app.route("/admin_services")
+
+def admin_services():
+    cur=mysql.connection.cursor()
+    cur.execute("SELECT * FROM services")
+    existing_services = cur.fetchall()
+    print(existing_services)
+
+
+    return render_template("admin_services.html",existing_services=existing_services)
+
+
+@app.route("/edit_service/<int:service_id>", methods=['POST'])
+def edit_service(service_id):
+    if request.method == 'POST':
+        # Get form data
+        new_price = request.form['new_price']
+        cur=mysql.connection.cursor()
+
+        # Update the service price in the database
+        cur.execute("UPDATE services SET price = %s WHERE id = %s", (new_price, service_id))
+        mysql.connection.commit()
+        message="updated price succesfully"
+
+        # Redirect back to the admin dashboard
+        return render_template("admin_services.html",message=message)
 
 
 
+@app.route("/add_service", methods=['POST'])
+def add_service():
+        if 'user_id' in session:
+            # Check if the logged-in user is an admin
+            user_id = session['user_id']
+            cur = mysql.connection.cursor()
+            cur.execute("SELECT is_admin FROM users WHERE id = %s", (user_id,))
+            is_admin = cur.fetchone()[0]
+
+            if is_admin:
+                # Admin user, handle the form submission
+                service_name = request.form['service_name']
+                description = request.form['description']
+                price = request.form['price']
+
+                # Insert the new service into the services table
+                cur.execute("INSERT INTO services (name, description, price) VALUES (%s, %s, %s)", (service_name, description, price))
+                mysql.connection.commit()
+
+                message="Added service succesfully"
+
+        return render_template("admin_services.html",message=message)
+
+@app.route("/remove_service", methods=['POST'])
+
+def remove_service(): 
+            if 'user_id' in session:
+                # Check if the logged-in user is an admin
+                user_id = session['user_id']
+                cur = mysql.connection.cursor()
+                cur.execute("SELECT is_admin FROM users WHERE id = %s", (user_id,))
+                is_admin = cur.fetchone()[0]
+
+                if is_admin:
+                    service_id=request.form['service_id']
+                    cur.execute("DELETE FROM services WHERE id = %s", (service_id,))
+                    mysql.connection.commit()
+
+                    message="removed the service succesfully"
+            return render_template("admin_services.html",message=message)        
+
+@app.route("/employees")
+def employees():
+    return render_template("employees.html")
+
+@app.route("/staff", methods=["GET", "POST"])
+def staff():
+    if request.method == "GET":
+        return render_template("staff_login.html", error_message=None)
+    else:
+        mobile_number = request.form["mobile_number"]
+        password = request.form["password"]
+
+        # Check if the mobile number is present in the employees table
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT * FROM employees WHERE employee_mobile_number = %s", (mobile_number,))
+        user = cur.fetchone()
+
+        if user:
+            # Mobile number is found, check password
+            if user[3] == password:
+                # Password is correct
+
+                # Store user details in the session
+                session["user_details"] = {
+                    "id": user[0],
+                    "employee_name": user[1],
+                    "employee_mobile_number": user[2],
+                    "is_attender": user[4]
+                }
+
+                if user[4] == 1:
+                    # User is an attender, redirect to attender page
+                    return redirect(url_for("attender"))
+                else:
+                    # User is a regular employee, redirect to employee page
+                    return redirect(url_for("employee"))
+            else:
+                # Incorrect password
+                message = "Wrong password"
+                return render_template("staff_login.html", message=message)
+        else:
+            # User not found
+            message = "Employee not found. Please check your mobile number."
+            return render_template("staff_login.html", message=message)
+
+
+@app.route("/attender",methods=["POST","GET"])
+def attender():
+    user_details = session.get("user_details")
+    details=list(user_details.values())
+    attender_id=details[0]
+
+    if not user_details or user_details.get("is_attender") != 1:
+        # Redirect if the user is not in session or is not an attender
+        return redirect(url_for("employee"))
+
+    cur = mysql.connection.cursor()
+    today = date.today()
+    cur.execute("SELECT DISTINCT e.employee_name FROM employees e "
+                "JOIN attendance a ON e.id = a.employee_id "
+                "WHERE a.attender_id = %s AND a.attendance_date = %s AND a.status = 'present'",
+                (attender_id, today))
+    present_employees = cur.fetchall()
+    print(present_employees)
     
+    cur.execute("SELECT * FROM employees")
+    employees = cur.fetchall()
+    message=None
+
+    if request.method == "POST":
+    # Handle attendance marking
+        marked_ids = request.form.getlist("marked_ids")
+        print(marked_ids)
+        attendance_date = date.today()       
+
+        for employee_id in marked_ids:
+            # Insert or update attendance record
+            cur = mysql.connection.cursor()
+            cur.execute("INSERT INTO attendance (employee_id, attender_id, attendance_date, status) VALUES (%s, %s, %s, 'present') ON DUPLICATE KEY UPDATE status='present'", (employee_id, attender_id, attendance_date))
+            mysql.connection.commit()
+            message="marked attendance for today"
+
+
+
+    return render_template("attender.html", user_details=details,employees=employees,present_employees=present_employees,message=message)
+
+@app.route("/employee")
+def employee():
+    user_details = session.get("user_details")
+    details=list(user_details.values())  # Debug statement
+    print(details)
+
+
+    if not user_details or user_details.get("is_attender") != 0:
+        # Redirect if the user is not in session or is not a regular employee
+        return redirect(url_for("attender"))
+
+    # You can add more logic for the employee dashboard here
+    return render_template("employee.html", user_details=details)
+
+
 @app.route("/signout")
 
 def signout():
@@ -175,6 +359,8 @@ def signout():
     session.clear()
 
     return redirect(url_for('login'))
+
+
 
 
 if __name__ == '__main__':

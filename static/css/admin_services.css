@@ -1,0 +1,29 @@
+.title{
+    text-align: center;
+    font-family: 'Kalnia', serif;
+}
+.heading{
+    margin-top: 10px;
+    font-family: 'Kalnia', serif;
+}
+
+.btn{
+    margin-top: 8px;
+}
+.card{
+    text-align: center;
+    margin-top: 10px;
+}
+.card-body{
+    background-color: rgb(46, 45, 45);
+    color: white;
+}
+.cp-text{
+    text-align: center;
+}
+
+.container-sm{
+    background-color: dark;
+    color: aliceblue    ;
+    padding-bottom: 10px;
+}
