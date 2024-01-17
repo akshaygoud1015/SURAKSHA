@@ -35,7 +35,6 @@ def login():
 
             if bcrypt.check_password_hash(password, password_candidate):
                 print("found")
-                # Password is correct, set the user ID in the session
                 session['user_id'] = data[0]
 
                 if data[5]:
@@ -43,13 +42,13 @@ def login():
                 else:
                     
                     flash('You are now logged in', 'success')
-                    return redirect(url_for('dashboard'))  # Redirect to the dashboard route or wherever you want to go after login
+                    return redirect(url_for('dashboard'))  
             else:
-                # Incorrect password
+                
                 message="wrong password"
                 return render_template("login.html",message=message)
         else:
-            # User not found
+            
             flash('Invalid mobile number', 'danger')
 
     return render_template("login.html")
@@ -63,10 +62,10 @@ def signup():
         password = request.form['password']
 
 
-        # Hash the password before storing it in the database
+        
         hashed_password = bcrypt.generate_password_hash(password)
 
-        # Store the user details in the database
+        
         cur = mysql.connection.cursor()
         cur.execute("INSERT INTO users (name, email, mobile_number, password) VALUES (%s, %s, %s, %s)", (name, email, mobile_number, hashed_password))
         mysql.connection.commit()
@@ -98,7 +97,7 @@ def bookings():
 @app.route("/dashboard")
 def dashboard():
     if 'user_id' in session:
-        # User is authenticated, render the dashboard
+        
 
         # Fetch user details from the database using the user_id stored in the session
         user_id = session['user_id']
@@ -111,7 +110,7 @@ def dashboard():
 
         return render_template("dashboard.html", user_data=user_data, services=services)
     else:
-        # User is not authenticated, redirect to login page
+        
         return redirect(url_for('login'))
     
 
@@ -124,8 +123,6 @@ def admin_dashboard():
         is_admin = cur.fetchone()[0]
         if is_admin:
     # Admin user
-    # Query active users and their bookings, and pass the data to the template
-    # Modify the query according to your database structure
             cur.execute("SELECT name,mobile_number FROM users ")
             active_users = cur.fetchall()
             print(active_users)
@@ -145,7 +142,7 @@ def clients():
     is_admin = cur.fetchone()[0]
 
     if is_admin:
-        # Admin user
+        
         # Calculate the date 3 months ago
         three_months_ago = datetime.now() - timedelta(days=90)
 
@@ -200,12 +197,12 @@ def edit_service(service_id):
         new_price = request.form['new_price']
         cur=mysql.connection.cursor()
 
-        # Update the service price in the database
+        
         cur.execute("UPDATE services SET price = %s WHERE id = %s", (new_price, service_id))
         mysql.connection.commit()
         message="updated price succesfully"
 
-        # Redirect back to the admin dashboard
+        
         return render_template("admin_services.html",message=message)
 
 
@@ -220,12 +217,10 @@ def add_service():
             is_admin = cur.fetchone()[0]
 
             if is_admin:
-                # Admin user, handle the form submission
                 service_name = request.form['service_name']
                 description = request.form['description']
                 price = request.form['price']
 
-                # Insert the new service into the services table
                 cur.execute("INSERT INTO services (name, description, price) VALUES (%s, %s, %s)", (service_name, description, price))
                 mysql.connection.commit()
 
@@ -237,7 +232,6 @@ def add_service():
 
 def remove_service(): 
             if 'user_id' in session:
-                # Check if the logged-in user is an admin
                 user_id = session['user_id']
                 cur = mysql.connection.cursor()
                 cur.execute("SELECT is_admin FROM users WHERE id = %s", (user_id,))
@@ -253,6 +247,7 @@ def remove_service():
 
 @app.route("/employees")
 def employees():
+
     return render_template("employees.html")
 
 @app.route("/staff", methods=["GET", "POST"])
@@ -321,13 +316,11 @@ def attender():
     message=None
 
     if request.method == "POST":
-    # Handle attendance marking
         marked_ids = request.form.getlist("marked_ids")
         print(marked_ids)
         attendance_date = date.today()       
 
         for employee_id in marked_ids:
-            # Insert or update attendance record
             cur = mysql.connection.cursor()
             cur.execute("INSERT INTO attendance (employee_id, attender_id, attendance_date, status) VALUES (%s, %s, %s, 'present') ON DUPLICATE KEY UPDATE status='present'", (employee_id, attender_id, attendance_date))
             mysql.connection.commit()
@@ -340,12 +333,11 @@ def attender():
 @app.route("/employee")
 def employee():
     user_details = session.get("user_details")
-    details=list(user_details.values())  # Debug statement
+    details=list(user_details.values()) 
     print(details)
 
 
     if not user_details or user_details.get("is_attender") != 0:
-        # Redirect if the user is not in session or is not a regular employee
         return redirect(url_for("attender"))
 
     # You can add more logic for the employee dashboard here

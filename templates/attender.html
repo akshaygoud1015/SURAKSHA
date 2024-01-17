@@ -31,18 +31,20 @@
             <thead>
               <tr>
                 <th scope="col">Name</th>
+                <th scope="col">Mark</th>
                 
             </tr>
         </thead>
         <tbody>
             {% for employee in employees %}
             <tr>
-              <td><div class="col-sm  align-self-center">
-                <label>
-                    <input type="checkbox" name="marked_ids" value="{{ employee[0] }}">
-                    <h5>{{ employee[1] }}</h5>
-                </label>
+              <td><div class="col-sm">
+                <h5>{{ employee[1] }}</h5>
             </div></td>
+            <td>            <label>
+                <input type="checkbox" name="marked_ids" value="{{ employee[0] }}">
+                
+            </label></td>
             </tr>
             {% endfor %}
         </tbody>
@@ -53,30 +55,11 @@
       {% endif %}
     </form>
 
-
-        <!-- <form method="post" action="{{ url_for('attender') }}">
-            <div class="row">
-                {% for employee in employees %}
-                <div class="col-sm  align-self-center">
-                    <label>
-                        <input type="checkbox" name="marked_ids" value="{{ employee[0] }}">
-                        {{ employee[1] }}
-                    </label>
-                </div>
-                {% endfor %}
-                
-                <button type="submit" class="btn btn-dark btn-sm w-25">Mark Attendance</button>
-
-                {% if message %}
-                <div class="alert alert-danger">{{ message }}</div>
-                {% endif %}
-
-        </form> -->
     </div>
 
-    <div class="container">
+    <div class="container ist">
 
-        <h1 class="title">Attendance: today</h1>
+        <h1 class="head">Attendance: today</h1>
         <ul>
             {% for employee in present_employees %}
             <li>{{ employee[0] }}</li>
@@ -84,7 +67,7 @@
         </ul>
     </div>
 
-    <a href="{{ url_for('signout') }}"> Sign out</a>
+    <a class="btn btn-dark bt" href="{{ url_for('signout') }}"> Sign out</a>
 
 
 
