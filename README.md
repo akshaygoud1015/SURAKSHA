@@ -106,8 +106,8 @@ Now add few bookings into the table for testings using these commands:
         attender_id INT,
         attendance_date DATE,
         status ENUM('present', 'absent') DEFAULT 'absent',
-        FOREIGN KEY (employee_id) REFERENCES employees(id),
-        FOREIGN KEY (attender_id) REFERENCES employees(id)
+        FOREIGN KEY (employee_id) REFERENCES employees_db(id),
+        FOREIGN KEY (attender_id) REFERENCES employees_db(id)
        );
      
 
