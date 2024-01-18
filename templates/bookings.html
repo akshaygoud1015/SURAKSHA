@@ -16,7 +16,7 @@
     <title>Dashboard</title>
 </head>
 <body>
-    <h1 class="heading"> welcome  {{ user_data[1] }}</h1>
+    <h1 class="heading"> welcome  {{ user_data.id}}</h1>
     <nav class="navbar navbar-expand-lg justify-content-center navbar-dark bg-dark">
         <div class="container-fluid">
           <a class="navbar-brand" href="{{ url_for('dashboard')}}">Home</a>
@@ -26,7 +26,7 @@
           <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{{ url_for('bookings', user_id=user_data[0])  }}">My Bookings</a>
+                <a class="nav-link active" aria-current="page" href="#">My Bookings</a>
               </li>
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -49,8 +49,8 @@
                 <div class="col-md-4 mb-4">
                     <div class="card shadow-lg p-3 mb-5 bg-body rounded">
                         <div class="card-body">
-                            <h5 class="card-title">{{ booking[2] }}</h5>
-                            <p class="card-text">{{ booking[3] }}</p>
+                            <h5 class="card-title">{{ booking.service_name }}</h5>
+                            <p class="card-text">{{ booking.booking_date }}</p>
                             <a href="#" class="btn btn-primary">Book again</a>
                         </div>
                     </div>

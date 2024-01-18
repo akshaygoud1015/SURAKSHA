@@ -52,16 +52,16 @@
       <h1 class="heading">services</h1>
       <div class="container services">
         <div class="row">
-            {% for service in existing_services %}
+            {% for service in existing_service %}
                 <div class="col-md-4 mb-4">
                     <div class="card shadow-lg p-3 mb-5 bg-body rounded">
                         <div class="card-body">
-                            <h5 class="card-title">{{ service[1] }}</h5>
-                            <p class="card-text">{{ service[2] }}</p>
-                            <p class="card-text">Price: Rs {{ service[3] }}</p>
+                            <h5 class="card-title">{{ service.name }}</h5>
+                            <p class="card-text">{{ service.description}}</p>
+                            <p class="card-text">Price: Rs {{ service.price}}</p>
     
                             <!-- Edit Service Form -->
-                            <form method="POST" action="{{ url_for('edit_service', service_id=service[0]) }}">
+                            <form method="POST" action="{{ url_for('edit_service', service_id=service.id) }}">
                                 <label for="new_price">New Price:</label>
                                 <input type="text" name="new_price" required>
                                 <button type="submit" class="btn btn-primary">Update Price</button>
@@ -98,23 +98,23 @@
 
     <h1 class="heading">Remove a Service</h1>
     <div class="container-sm bg-dark shadow-lg p-3 mb-5 bg-dark rounded">
-        {% for service in existing_services %}
+        {% for service in existing_service %}
         <div class="accordion accordion-flush" id="accordionFlushExample">
             <div class="accordion-item">
-                <h2 class="accordion-header" id="flush-heading{{ service[0] }}">
+                <h2 class="accordion-header" id="flush-heading{{ service.name }}">
                     <form method="post" action="{{ url_for('remove_service') }}">
-                        <input type="hidden" name="service_id" value="{{ service[0] }}">
+                        <input type="hidden" name="service_id" value="{{ service.id }}">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#flush-collapse{{ service[0] }}" aria-expanded="false"
                                 aria-controls="flush-collapse{{ service[0] }}">
-                            {{ service[1] }}
+                            {{ service.name }}
                         </button>
                 </h2>
                 <div id="flush-collapse{{ service[0] }}" class="accordion-collapse collapse"
                      aria-labelledby="flush-heading{{ service[0] }}" data-bs-parent="#accordionFlushExample">
                     <div class="accordion-body"><button type="submit"
                                                         class="btn btn-primary text-center justify-content-center">Remove
-                            {{ service[1] }}</button></div>
+                            {{ service.name }}</button></div>
                 </div>
                 </form>
             </div>

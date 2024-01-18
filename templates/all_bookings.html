@@ -57,9 +57,9 @@
                 <div class="col-md-4 mb-4">
                     <div class="card shadow-lg p-3 mb-5 bg-body rounded">
                         <div class="card-body">
-                            <h5 class="card-title">Name: {{ booking[1] }}</h5>
-                            <p class="card-text">service booked : {{ booking[2] }}</p>
-                            <p class="card-text">booking date : {{ booking[3] }}</p>
+                            <h5 class="card-title">Name: {{booking[1].name}}</h5>
+                            <p class="card-text">Service booked: {{ booking[0].service_name }}</p>
+                            <p class="card-text">Booking date: {{ booking[0].booking_date }}</p>
                         </div>
                     </div>
                 </div>
@@ -77,11 +77,11 @@
             {% for booking in previous_bookings %}
                 <div class="col-md-4 mb-4">
                     <div class="card shadow-lg p-3 mb-5 bg-body rounded">
-                        <div class="card-body">
-                            <h5 class="card-title">Name : {{ booking[1] }}</h5>
-                            <p class="card-text">Service : {{ booking[2] }}</p>
-                            <p class="card-text">Booking Date : {{ booking[3] }}</p>
-                        </div>
+                      <div class="card-body">
+                        <h5 class="card-title">Name: {{booking[1].name}}</h5>
+                        <p class="card-text">Service booked: {{ booking[0].service_name }}</p>
+                        <p class="card-text">Booking date: {{ booking[0].booking_date }}</p>
+                    </div>
                     </div>
                 </div>
             {% endfor %}
