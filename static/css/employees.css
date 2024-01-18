@@ -1,8 +1,23 @@
 .heading{
-    margin-top: 10px;
     font-family: 'Kalnia', serif;
 }
 .title{
     text-align: center;
     font-family: 'Kalnia', serif;
+}
+
+.card-body{
+    background-color: rgb(46, 45, 45);
+    color: white;
+    text-align: center;
+}
+
+
+.tat{
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.add{
+    color: aliceblue;
 }

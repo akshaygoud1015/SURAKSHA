@@ -35,6 +35,7 @@ class employees_db(db.Model):
     employee_mobile_number = db.Column(db.String(15), nullable=False)
     employee_password = db.Column(db.String(255), nullable=False)
     is_attender = db.Column(db.Boolean, nullable=False)
+    salary = db.Column(db.Integer, nullable=False)
 
     def __repr__(self):
         return f"Employee(id={self.id}, employee_name={self.employee_name}, employee_mobile_number={self.employee_mobile_number}, is_attender={self.is_attender})"
