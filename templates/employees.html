@@ -49,8 +49,95 @@
           </div>
         </div>
       </nav>
-      <h1 class="heading"> Employee list</h1>
+      <h1 class="heading tat"> Employee list</h1>
+
+      <div class="container list">
+        <div class="row">
+            {% if employee_data %}
+            {% for employee in employee_data %}
+                <div class="col-md-4 mb-4">
+                    <div class="card shadow-lg p-3 mb-5 bg-body rounded">
+                        <div class="card-body">
+                            <h5 class="card-title">NAME : {{ employee.name }}</h5>
+                            <p class="card-text">MOBILE : {{ employee.number }}</p>
+                            <p class="card-text">PASSWORD : {{ employee.password }}</p>
+                            <p class="card-text">ATTENDER : {{ employee.attender }}</p>
+                            <p class="card-text">ATTENDANCE : {{ employee.present_days }}</p>
+                            <p class="card-text">SALARY : {{ employee.salary }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            {% else %}
+            <h2>No Previous Bookings Found!!</h2>
+            {% endif %}
+        </div>
+        </div>
+
+        {%if message%}
+        <div class="alert alert-success">{{ message }}</div>
+        {% endif%}
+
+    <h1 class="heading">Add Employee</h1>
+
+    <div class="container-sm bg-dark shadow-lg p-3 mb-5 bg-dark rounded add">
+      <form method="post" action="{{ url_for('add_employee') }}">
+          <div class="mb-3">
+              <label for="exampleInputEmail1" class="form-label"><h4 class="heading">Employee Name</h4></label>
+              <input type="text" class="form-control"  name="name" >
+          </div>
+          <div class="mb-3">
+              <label for="exampleInputPassword1" class="form-label"><h4 class="heading">Mobile Number</h4></label>
+              <input type="text" class="form-control" id="exampleInputPassword1" name="number">
+          </div>
+          <div class="mb-3">
+              <label for="exampleInputPassword1" class="form-label"><h4 class="heading">password</h4></label>
+              <input type="text" class="form-control" id="exampleInputPassword1" name="password">
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label"><h4 class="heading">attender - yes/no</h4></label>
+            <input type="text" class="form-control" id="exampleInputPassword1" name="attender">
+        </div>
+        <div class="mb-3">
+          <label for="exampleInputPassword1" class="form-label"><h4 class="heading">salary</h4></label>
+          <input type="decimal" class="form-control" id="exampleInputPassword1" name="salary">
+      </div>
+
       
+          <button type="submit" class="btn btn-primary text-center justify-content-center">Add Employee</button>
+      </form>    
+  </div>
+
+
+
+  <h1 class="heading">Remove an employee</h1>
+<div class="container-sm bg-dark shadow-lg p-3 mb-5 bg-dark rounded">
+    {% for employee in employee_data %}
+    <div class="accordion accordion-flush" id="accordionFlushExample">
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="flush-heading{{ employee.name }}">
+                <form method="post" action="{{ url_for('remove_employee') }}">
+                    <input type="hidden" name="employee_name" value="{{ employee.name }}">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#flush-collapse{{ employee.id }}" aria-expanded="false"
+                            aria-controls="flush-collapse{{ employee.id }}">
+                        {{ employee.name }}
+                    </button>
+            </h2>
+            <div id="flush-collapse{{ employee.id }}" class="accordion-collapse collapse"
+                 aria-labelledby="flush-heading{{ employee.id }}" data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body"><button type="submit"
+                                                    class="btn btn-primary text-center justify-content-center">Remove
+                        {{ employee.name }}</button></div>
+            </div>
+            </form>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+
+
 
 
 

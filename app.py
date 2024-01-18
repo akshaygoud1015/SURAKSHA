@@ -2,7 +2,7 @@ from flask import Flask, jsonify, request, render_template, redirect, session, u
 from flask_bcrypt import Bcrypt
 from datetime import date, datetime, timedelta
 from models import db, users, user_booking, employees_db, attendance, services  # Correct import order
-from sqlalchemy.orm import joinedload
+from sqlalchemy.orm import joinedload,Session
 
 
 app = Flask(__name__)
@@ -96,7 +96,7 @@ def signup():
 @app.route("/reset", methods=['GET', 'POST'])
 def reset():
     # Your reset logic here
-    return "Reset Route"
+    return render_template("reset.html")
 
 
 
@@ -293,7 +293,88 @@ def remove_service():
 @app.route("/employees")
 def employees():
 
-    return render_template("employees.html")
+    all_employees = employees_db.query.all()
+
+    employee_data = []
+
+    for employee in all_employees:
+        # Calculate the number of days the employee is present in the current month
+        current_month_attendance = attendance.query.filter(
+            attendance.employee_id == employee.id,
+            attendance.attendance_date.between(datetime.now().replace(day=1), datetime.now())
+        ).filter_by(status='present').distinct(attendance.attendance_date).all()
+
+
+        present_days = len(current_month_attendance)
+
+        employee_data.append({
+            'name': employee.employee_name,
+            'number': employee.employee_mobile_number,
+            'password': employee.employee_password,
+            'attender': employee.is_attender,
+            'salary': employee.salary,
+            'present_days': present_days
+        })
+
+
+
+    return render_template("employees.html",employee_data=employee_data)
+
+
+@app.route("/add_employee",methods=["POST"])
+def add_employee():
+        if 'user_id' in session:
+        # Check if the logged-in user is an admin
+            user_id = session['user_id']
+            user = users.query.filter_by(id=user_id).first()
+
+            if user and user.is_admin:
+                name=request.form['name']
+                number=request.form['number']
+                password=request.form['password']
+                attender=request.form['attender']
+                salary=request.form['salary']
+
+            if attender=="yes" or "Yes":
+                is_attender=True
+            else:
+                is_attender=False        
+
+            new_employee = employees_db(employee_name=name,employee_mobile_number=number, employee_password=password,is_attender=is_attender,salary=salary)
+            db.session.add(new_employee)
+            db.session.commit()    
+
+            
+            message="Succesfully added a new employee..!"
+
+
+
+
+
+        return render_template("employees.html",message=message)
+@app.route("/remove_employee", methods=["POST"])
+def remove_employee():
+    message = ""
+
+    if 'user_id' in session:
+        # Check if the logged-in user is an admin
+        user_id = session['user_id']
+        user = users.query.filter_by(id=user_id).first()
+
+        if user and user.is_admin:
+            employee_name = request.form['employee_name']
+
+            # Delete the employee using SQLAlchemy
+            employee_to_remove = employees_db.query.filter_by(employee_name=employee_name).first()
+            if employee_to_remove:
+                db.session.delete(employee_to_remove)
+                db.session.commit()
+
+                message = f"Removed the employee {employee_name} successfully"
+            else:
+                message = f"No employee found with name {employee_name}"
+
+    return render_template("employees.html", message=message)
 
 @app.route("/staff", methods=["GET", "POST"])
 def staff():
