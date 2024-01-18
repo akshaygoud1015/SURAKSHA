@@ -93,11 +93,55 @@ def signup():
 
     return render_template("signup.html")
 
+@app.route("/forgot", methods=['GET', 'POST'])
+def forgot():
+    # fetching details from webpage
+    if request.method == 'POST':
+        mobile_number = request.form['mobile_number']
+        email = request.form['email']
+
+        # fetching mobile number from database
+        user = users.query.filter_by(mobile_number=mobile_number).first()
+
+        # checking existence of user
+        if user:
+            if email == user.email:
+                session['user_id'] = user.id
+                return redirect(url_for('reset'))
+            else:
+                return render_template("forgot.html",message="Invalid details")
+        else:
+            return render_template("forgot.html",message="No user found")
+            
+    return render_template("forgot.html")
+
 @app.route("/reset", methods=['GET', 'POST'])
 def reset():
-    # Your reset logic here
+    #checking user in session
+    if 'user_id' in session:
+        user_id = session['user_id']
+        user = users.query.filter_by(id=user_id).first()
+    
+    #fetching new password from webpage
+    if request.method == 'POST':
+        new_password = request.form['password']
+        new_confirm_password = request.form['confirm_password']
+        
+        #checking both password values
+        if new_password == new_confirm_password:
+            try:
+                hashed_password = bcrypt.generate_password_hash(new_password).decode('utf-8')
+                user.password = hashed_password
+                db.session.commit()
+                return render_template("reset.html",message="Password changed successfully!")
+            
+            except Exception as e:
+                print(f"Error: {e}")
+                db.session.rollback()
+        else:
+            return render_template("reset.html",message="Passwords must match")
+        
     return render_template("reset.html")
-
 
 
 @app.route("/bookings")
