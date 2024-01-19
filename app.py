@@ -40,6 +40,11 @@ def index():
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
+    #fetching any messages
+    message = request.args.get('message')
+    if message:
+        return render_template("login.html",message=message)
+
     if request.method == 'POST':
         mobile_number = request.form['mobile_number']
         password_candidate = request.form['password']
@@ -133,7 +138,7 @@ def reset():
                 hashed_password = bcrypt.generate_password_hash(new_password).decode('utf-8')
                 user.password = hashed_password
                 db.session.commit()
-                return render_template("reset.html",message="Password changed successfully!")
+                return redirect(url_for('login',message="Password changed successfully!"))
             
             except Exception as e:
                 print(f"Error: {e}")
@@ -536,3 +541,4 @@ if __name__ == '__main__':
 
     # Run the Flask application in debug mode
     app.run(debug=True)
+    
