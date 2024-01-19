@@ -45,16 +45,18 @@
       <div class="container services">
         <div class="row">
             {% for service in services %}
+        
                 <div class="col-md-4 mb-4">
                     <div class="card shadow-lg p-3 mb-5 bg-body rounded">
                         <div class="card-body">
                             <h5 class="card-title">{{ service.name}}</h5>
                             <p class="card-text">{{ service.description }}</p>
                             <p class="card-text">Price: Rs {{ service.price }}</p>
-                            <a href="#" class="btn btn-primary">Book Now</a>
+                            <a href="{{ url_for('make_booking',user_name=user_data.name,user_number=user_data.mobile_number,user_email=user_data.email,user_service=service.name) }}" class="btn btn-primary">Book Now</a>
                         </div>
                     </div>
                 </div>
+           
             {% endfor %}
         </div>
         </div>

@@ -520,6 +520,50 @@ def employee():
     # You can add more logic for the employee dashboard here
     return render_template("employee.html", user_details=details)
 
+
+@app.route("/make_booking",methods=["GET","POST"])
+def make_booking():
+    if request.method=="POST":
+        
+        user_name = request.args.get('user_name')
+        user_email=request.args.get('user_mail')
+        user_service=request.args.get('service')
+        booking_date=request.form["book_date"]
+        user_data=[user_name,user_email,user_service,booking_date]
+        user_q=users.query.filter_by(email=user_email).first()
+        user_id=user_q.id
+        
+        new_booking=user_booking(user_id=user_id,booking_date=booking_date,service_name=user_service)
+        db.session.add(new_booking)
+        db.session.commit()
+
+  
+        message="Booked a session succesfully"
+
+        return render_template("make_booking.html",user_data=user_data,message=message) 
+
+    user_name = request.args.get('user_name')
+    user_email=request.args.get('user_email')
+    user_number=request.args.get('user_number')
+    user_service=request.args.get('user_service')
+    current_date = datetime.now().strftime('%Y-%m-%d')
+    service_price=services.query.filter(services.name==user_service).first()
+    if service_price:
+        price=service_price.price
+    
+    user_data=[user_name,user_email,user_number,user_service,price,current_date]
+
+
+   
+
+    return render_template("make_booking.html",user_data=user_data)
+
+
+    
+
+
+
+
 @app.route("/signout")
 
 def signout():
