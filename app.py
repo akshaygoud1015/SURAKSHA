@@ -77,7 +77,7 @@ def index():
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
-    #fetching any messages
+    # fetching any messages
     message = request.args.get('message')
     if message:
         return render_template("login.html",message=message)
@@ -159,17 +159,17 @@ def forgot():
 
 @app.route("/reset", methods=['GET', 'POST'])
 def reset():
-    #checking user in session
+    # checking user in session
     if 'user_id' in session:
         user_id = session['user_id']
         user = users.query.filter_by(id=user_id).first()
     
-    #fetching new password from webpage
+    # fetching new password from webpage
     if request.method == 'POST':
         new_password = request.form['password']
         
         try:
-            #encrypting new password
+            # encrypting new password
             hashed_password = bcrypt.generate_password_hash(new_password).decode('utf-8')
             user.password = hashed_password
             db.session.commit()
@@ -295,7 +295,7 @@ def admin_services():
     # Query all existing services
     existing_service = services.query.all()
     service_data=[]
-        # Convert each service object to a dictionary
+    # Convert each service object to a dictionary
     service_data = [{
         'id': service.id,
         'name': service.name,
@@ -406,43 +406,40 @@ def employees():
 @app.route("/add_employee",methods=["POST"])
 def add_employee():
         if 'user_id' in session:
-        # Check if the logged-in user is an admin
+            # Check if the user is in session
             user_id = session['user_id']
             user = users.query.filter_by(id=user_id).first()
 
+            # check if the user is admin
             if user and user.is_admin:
                 name=request.form['name']
-                number=request.form['number']
+                mobile_number=request.form['mobile_number']
                 password=request.form['password']
                 attender=request.form['attender']
                 salary=request.form['salary']
 
-            if attender=="yes" or "Yes":
-                is_attender=True
-            else:
-                is_attender=False        
+                if attender=="yes" or "Yes":
+                    is_attender=True
+                else:
+                    is_attender=False        
 
-            new_employee = employees_db(employee_name=name,employee_mobile_number=number, employee_password=password,is_attender=is_attender,salary=salary)
-            db.session.add(new_employee)
-            db.session.commit()    
+                new_employee = employees_db(employee_name=name,employee_mobile_number=mobile_number, employee_password=password,is_attender=is_attender,salary=salary)
+                db.session.add(new_employee)
+                db.session.commit()    
 
-            
-            message="Succesfully added a new employee..!"
+                message="Succesfully added a new employee!"
+                return render_template("employees.html", message=message)
 
+        return render_template("employees.html")
 
-
-
-
-        return render_template("employees.html",message=message)
 @app.route("/remove_employee", methods=["POST"])
 def remove_employee():
-    message = ""
 
     if 'user_id' in session:
-        # Check if the logged-in user is an admin
         user_id = session['user_id']
         user = users.query.filter_by(id=user_id).first()
 
+        # Check if the logged-in user is an admin
         if user and user.is_admin:
             employee_name = request.form['employee_name']
 
@@ -453,10 +450,13 @@ def remove_employee():
                 db.session.commit()
 
                 message = f"Removed the employee {employee_name} successfully"
+                return render_template("employees.html", message=message)
+                
             else:
                 message = f"No employee found with name {employee_name}"
+                return render_template("employees.html", message=message)
 
-    return render_template("employees.html", message=message)
+    return render_template("employees.html")
 
 @app.route("/staff", methods=["GET", "POST"])
 def staff():
