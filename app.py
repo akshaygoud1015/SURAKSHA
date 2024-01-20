@@ -3,6 +3,9 @@ from flask_bcrypt import Bcrypt
 from datetime import date, datetime, timedelta
 from models import db, users, user_booking, employees_db, attendance, services  # Correct import order
 from sqlalchemy.orm import joinedload,Session
+import requests
+import json
+from enum import Enum
 
 
 app = Flask(__name__)
@@ -29,7 +32,41 @@ db.init_app(app)
 
 # Additional configuration or routes...
 
+class ApiClient:
+	apiUri = 'https://api.elasticemail.com/v2'
+	apiKey = '3D2EB68EC893F4B3CBFF5FA7E9C344FD39B1C09EF54B8BF198824FC34E98029E6804406AFF38BEAAB4531FF45F02A594'
 
+	def Request(method, url, data):
+		data['apikey'] = ApiClient.apiKey
+		if method == 'POST':
+			result = requests.post(ApiClient.apiUri + url, data = data)
+		elif method == 'PUT':
+			result = requests.put(ApiClient.apiUri + url, data = data)
+		elif method == 'GET':
+			attach = ''
+			for key in data:
+				attach = attach + key + '=' + data[key] + '&' 
+			url = url + '?' + attach[:-1]
+			result = requests.get(ApiClient.apiUri + url)	
+			
+		jsonMy = result.json()
+		
+		if jsonMy['success'] is False:
+            
+			return jsonMy['error']
+			
+		return jsonMy['data']
+
+
+def Send(subject, EEfrom, fromName, to, bodyHtml, bodyText, isTransactional):
+	return ApiClient.Request('POST', '/email/send', {
+		'subject': subject,
+		'from': EEfrom,
+		'fromName': fromName,
+		'to': to,
+		'bodyHtml': bodyHtml,
+		'bodyText': bodyText,
+		'isTransactional': isTransactional})
 
 @app.route("/")
 def index():
@@ -152,8 +189,8 @@ def bookings():
 
     # Fetch user details and booking from the database using SQLAlchemy
     user_data = users.query.filter_by(id=user_id).first()
-    print(user_data)
     bookings_data = user_booking.query.filter_by(user_id=user_id).all()
+    print(bookings_data)
 
     return render_template("bookings.html", user_data=user_data, bookings_data=bookings_data)
 
@@ -537,9 +574,30 @@ def make_booking():
         new_booking=user_booking(user_id=user_id,booking_date=booking_date,service_name=user_service)
         db.session.add(new_booking)
         db.session.commit()
+        email_subject = "Booking Confirmation"
+        email_from = "20r01a67c2@cmritonline.ac.in"
+        email_from_name = "Suraksha"
+        email_to = user_email
+
+        # Email content with user details
+        email_body_html = f"""
+            <h1>Booking Details</h1>
+            <p>Name: {user_name}</p>
+            <p>Email: {user_email}</p>
+            <p>Service Booked: {user_service}</p>
+            <p>Date: {booking_date}</p>
+        """
+        email_body_text = "Booking details:\n\n" + \
+                           f"Name: {user_name}\n" + \
+                           f"Email: {user_email}\n" + \
+                           f"Service Booked: {user_service}\n" + \
+                           f"Date: {booking_date}\n"
+
+        Send(email_subject, email_from, email_from_name, email_to, email_body_html, email_body_text, True)
 
   
-        message="Booked a session succesfully"
+        message="Booked a session succesfully , Please check your mail(spam too) for booking confirmation"
+
 
         return render_template("make_booking.html",user_data=user_data,message=message) 
 
