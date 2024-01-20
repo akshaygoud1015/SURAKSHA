@@ -67,7 +67,7 @@ def login():
                 message = "Wrong password"
                 return render_template("login.html", message=message)
         else:
-            flash('Invalid mobile number', 'danger')
+            return render_template("login.html", message="User not found. Please check your mobile number")
 
     return render_template("login.html")
 
@@ -90,7 +90,7 @@ def signup():
             db.session.add(new_user)
             db.session.commit()
 
-            return redirect(url_for('login'))
+            return redirect(url_for('login', message="Account created successfully!"))
 
         except Exception as e:
             print(f"Error creating user: {e}")
@@ -116,7 +116,7 @@ def forgot():
             else:
                 return render_template("forgot.html",message="Invalid details")
         else:
-            return render_template("forgot.html",message="No user found")
+            return render_template("forgot.html",message="User not found. Please check your mobile number")
             
     return render_template("forgot.html")
 
@@ -130,22 +130,18 @@ def reset():
     #fetching new password from webpage
     if request.method == 'POST':
         new_password = request.form['password']
-        new_confirm_password = request.form['confirm_password']
         
-        #checking both password values
-        if new_password == new_confirm_password:
-            try:
-                hashed_password = bcrypt.generate_password_hash(new_password).decode('utf-8')
-                user.password = hashed_password
-                db.session.commit()
-                return redirect(url_for('login',message="Password changed successfully!"))
+        try:
+            #encrypting new password
+            hashed_password = bcrypt.generate_password_hash(new_password).decode('utf-8')
+            user.password = hashed_password
+            db.session.commit()
+            return redirect(url_for('login',message="Password changed successfully!"))
             
-            except Exception as e:
-                print(f"Error: {e}")
-                db.session.rollback()
-        else:
-            return render_template("reset.html",message="Passwords must match")
-        
+        except Exception as e:
+            print(f"Error: {e}")
+            db.session.rollback()
+
     return render_template("reset.html")
 
 

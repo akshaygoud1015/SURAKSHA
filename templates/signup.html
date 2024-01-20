@@ -14,13 +14,13 @@
       <h2>Registration</h2>
       <form action="{{ url_for('signup') }}" method="post" onsubmit="return validateForm()">
         <div class="input-box">
-            <input type="text" name="name" placeholder="Enter your name" required>
+            <input type="text" name="name" id="name" placeholder="Enter your name" required>
         </div>
         <div class="input-box">
             <input type="text" name="email" placeholder="Enter your email" required>
         </div>
         <div class="input-box">
-            <input type="number" name="mobile_number" placeholder="Enter your mobile number" required>
+            <input type="number" name="mobile_number" id="mobile_number" placeholder="Enter your mobile number" required>
         </div>
         <div class="input-box">
             <input type="password" name="password" id="password" placeholder="Create password" required>
@@ -38,6 +38,9 @@
         <div class="text">
             <h3>Already have an account? <a href="{{ url_for('login') }}">Login now</a></h3>
         </div>
+        {% if message %}
+        <div class="alert alert-danger">{{ message }}</div>
+        {% endif %}
     </form>
     
     </div>
@@ -49,9 +52,26 @@
         function validateForm() {
             var password = document.getElementById("password").value;
             var confirmPassword = document.getElementById("confirmPassword").value;
+            var name = document.getElementById("name").value;
+            var mobile_number = document.getElementById("mobile_number").value;
+
+            if (!/^[a-zA-Z]+(\s[a-zA-Z]+)*$/.test(name)) {
+                alert('Name must contain only alphabets.');
+                return false;
+            }
+
+            if (!/^\d{10}$/.test(mobile_number)) {
+                alert('Mobile number must contain 10 digits.');
+                return false;
+            }
+
+            if (password.length < 8 || !/[a-zA-Z]/.test(password) || !/\d/.test(password)) {
+                alert('Password must contain at least 8 characters, one alphabet, and one digit.');
+                return false;
+            }
 
             if (password !== confirmPassword) {
-                alert("Passwords do not match");
+                alert("Passwords must match.");
                 return false;
             }
 
