@@ -7,3 +7,10 @@
     margin: 20px 0 10px 5px;
     font-family: 'Kalnia', serif;
 }
+
+.logo{
+    position: absolute;
+    top: 150px;
+    right: 580px;
+    height: 450px;
+}

@@ -48,6 +48,8 @@
     margin-bottom: 20px;
     font-family: 'Kalnia', serif;
     text-align: center;
+    position: relative;
+    right: 15px;
 }
 .card-img-top{
     height: 258px;
@@ -75,4 +77,30 @@
     position: relative;
     top: 175px;
     right: 72px;
+}
+
+.card-body{
+    background-color: rgb(250, 245, 238);
+}
+
+.card-title{
+    font-weight: bolder;
+
+}
+
+.loc{
+    font-family: 'Kalnia', serif;
+
+}
+
+.logo{
+    position: absolute;
+    height: 150px;
+    width: 150px;
+    left: 65px;
+    inline-size: none;
+}
+
+.mail{
+    text-align: center;
 }

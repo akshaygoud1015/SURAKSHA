@@ -10,6 +10,8 @@
     <title>Document</title>
 </head>
 <body id="bod">
+    <img src="{{url_for('static', filename='images/logo.jpg')}}" class="rounded float-start logo rounded-circle" alt="...">
+
     <div class="wrapper">
       <h2>Registration</h2>
       <form action="{{ url_for('signup') }}" method="post" onsubmit="return validateForm()">
