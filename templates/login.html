@@ -15,7 +15,9 @@
 <body>
   
 
-  <div id="bg"></div>
+  <div id="bg">
+    <h1 class="title text-center">Login</h1>
+  </div>
   <img src="{{url_for('static', filename='images/logo.jpg')}}" class="rounded float-start logo rounded-circle" alt="...">
   <form method="post" action="{{ url_for('login') }}">
     <div class="form-field">
