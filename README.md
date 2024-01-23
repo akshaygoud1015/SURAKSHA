@@ -27,7 +27,7 @@ TWO TABLES ARE NEEDED TO BE CREATED UP UNTIL NOW
     mobile_number VARCHAR(15) NOT NULL,
     password VARCHAR(255) NOT NULL
 );
- -- ADD 2 users to the DB manually ; use this command to make one of the user admin :
+ -- ADD 2 users to the DB manually ; use this command to make one of the users admin :
 
      ALTER TABLE users ADD COLUMN is_admin BOOLEAN NOT NULL DEFAULT 0;
 
@@ -109,6 +109,10 @@ Now add few bookings into the table for testings using these commands:
         FOREIGN KEY (employee_id) REFERENCES employees_db(id),
         FOREIGN KEY (attender_id) REFERENCES employees_db(id)
        );
+
+    use this command to add a new column that stores time:
+
+    ALTER TABLE attendance ADD COLUMN attendance_time TIME;
      
 
 #keep updating this file with latest updates .thank you.
