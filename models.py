@@ -48,6 +48,7 @@ class attendance(db.Model):
     attender_id = db.Column(db.Integer, db.ForeignKey('employees_db.id'), nullable=False)
     attendance_date = db.Column(db.Date, nullable=False)
     status = db.Column(db.Enum('present', 'absent'), default='absent', nullable=False)
+    attendance_time = db.Column(db.Time, nullable=False)
 
     # Establish relationship with the employees table
     employee = relationship('employees_db', foreign_keys=[employee_id], backref='employee_attendance')
@@ -55,4 +56,4 @@ class attendance(db.Model):
 
     def __repr__(self):
         return f"Attendance(id={self.id}, employee_id={self.employee_id}, attender_id={self.attender_id}, " \
-               f"attendance_date={self.attendance_date}, status={self.status})"
+               f"attendance_date={self.attendance_date}, attendance_time={self.attendance_time} status={self.status})"

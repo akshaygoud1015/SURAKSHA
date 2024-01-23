@@ -512,7 +512,7 @@ def attender():
     # Query present employees for today
     present_employees = employees_db.query.join(attendance, employees_db.id == attendance.employee_id).filter(
         (attendance.attender_id == attender_id) & (attendance.attendance_date == today) & (attendance.status == 'present')
-    ).distinct(employees_db.employee_name).all()
+    ).add_columns(employees_db.employee_name, attendance.attendance_time).distinct(employees_db.employee_name).all()
 
     print(present_employees)
 
@@ -524,6 +524,7 @@ def attender():
         marked_ids = request.form.getlist("marked_ids")
         print(marked_ids)
         attendance_date = date.today()
+        attendance_time = datetime.now()
 
         # Mark attendance for selected employees
         for employee_id in marked_ids:
@@ -536,7 +537,7 @@ def attender():
                 existing_attendance.status = 'present'
             else:
                 new_attendance = attendance(employee_id=employee_id, attender_id=attender_id,
-                                            attendance_date=attendance_date, status='present')
+                                            attendance_date=attendance_date, status='present', attendance_time=attendance_time)
                 db.session.add(new_attendance)
 
         db.session.commit()
