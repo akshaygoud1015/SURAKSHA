@@ -64,7 +64,7 @@
             {% for employee in present_employees %}
             <li>{{ employee.employee_name }} - 
                 {% if employee.attendance_time %}
-                    Attendance marked at {{ employee.attendance_time.strftime('%H:%M:%S') }}
+                    Attendance marked at {{ employee.attendance_time.strftime('%I:%M %p') }}
                 {% else %}
                     Time not available
                 {% endif %}

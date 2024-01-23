@@ -66,7 +66,12 @@
                             <h5 class="card-title">NAME : {{ employee.name }}</h5>
                             <p class="card-text">MOBILE : {{ employee.number }}</p>
                             <p class="card-text">PASSWORD : {{ employee.password }}</p>
-                            <p class="card-text">ATTENDER : {{ employee.attender }}</p>
+                            <p class="card-text">Marked at : 
+                              {% if employee.time %}
+                                {{ employee.time.strftime('%I:%M %p') }}
+                              {% else %}
+                                -
+                              {% endif %}</p>
                             <p class="card-text">ATTENDANCE : {{ employee.present_days }}</p>
                             <p class="card-text">SALARY : {{ employee.salary }}</p>
 
