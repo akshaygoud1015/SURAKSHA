@@ -20,7 +20,7 @@ SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://{username}:{password}@{hostnam
     username="root",
     password="admin",
     hostname="localhost",
-    databasename="userDB",
+    databasename="userDb",
 )
 
 app.config["SQLALCHEMY_DATABASE_URI"] = SQLALCHEMY_DATABASE_URI
@@ -246,7 +246,7 @@ def clients():
         # Query active clients (booked a service in the last 3 months)
         active_clients = (
             db.session.query(users.name, users.mobile_number, user_booking.booking_date, user_booking.service_name)
-            .join(user_booking, user.id == user_booking.user_id)
+            .join(user_booking, users.id == user_booking.user_id)
             .filter(user_booking.booking_date >= three_months_ago)
             .all()
 )
@@ -254,7 +254,7 @@ def clients():
         # Query inactive clients (not booked a service in the last 3 months)
         inactive_clients = db.session.query(
             users.name, users.mobile_number, user_booking.booking_date, user_booking.service_name
-        ).join(user_booking, users.id == user_booking.user_id).filter(user_booking.booking_date <= three_months_ago).all()
+        ).join(user_booking, users.id == user_booking.user_id).filter(user_booking.booking_date < three_months_ago).all()
 
 
         return render_template("clients.html", active_clients=active_clients, inactive_clients=inactive_clients)
