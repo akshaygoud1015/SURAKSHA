@@ -62,7 +62,13 @@
         <h1 class="head">Attendance: today</h1>
         <ul>
             {% for employee in present_employees %}
-            <li>{{ employee.employee_name }}</li>
+            <li>{{ employee.employee_name }} - 
+                {% if employee.attendance_time %}
+                    Attendance marked at {{ employee.attendance_time.strftime('%H:%M:%S') }}
+                {% else %}
+                    Time not available
+                {% endif %}
+            </li>
             {% endfor %}
         </ul>
     </div>
