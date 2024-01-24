@@ -388,8 +388,10 @@ def employees():
 
 
         present_days = len(current_month_attendance)
-        today_time = attendance.query.filter(attendance.employee_id == employee.id, attendance.attendance_date == date.today()).with_entities(attendance.attendance_time).first().attendance_time
-
+        if attendance.query.filter(attendance.employee_id == employee.id, attendance.attendance_date == date.today()).value(attendance.status)=='present':
+            today_time = attendance.query.filter(attendance.employee_id == employee.id, attendance.attendance_date == date.today()).with_entities(attendance.attendance_time).first().attendance_time
+        else:
+            today_time = None
         employee_data.append({
             'name': employee.employee_name,
             'number': employee.employee_mobile_number,
